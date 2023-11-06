@@ -1,0 +1,91 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String              @id @default(auto()) @map("_id") @db.ObjectId
+  name              String?         
+  email             String?             @unique
+  emailVerified     DateTime?         
+  image             String?         
+  hashedPassword    String?         
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  favoritesIds      String[]            @db.ObjectId
+  coursesEnrolled   CourseEnrollment[]
+  accounts          Account[]
+  favoriteCourses   Course[]
+}
+
+model Account{
+  id                  String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId              String    @db.ObjectId
+  type                String
+  provider            String
+  providerAccountId   String
+  refresh_token       String?   @db.ObjectId
+  access_token        String?   @db.ObjectId
+  expires_at          Int?
+  token_type          String?
+  scope               String?
+  id_token            String?   @db.ObjectId
+  session_state       String?
+
+  user                User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Course {
+  id              String              @id @default(auto()) @map("_id") @db.ObjectId
+  title           String          
+  description     String?         
+  image           String?         
+  teacher         Teacher             @relation(fields: [teacherId], references: [id])
+  teacherId       String              @db.ObjectId
+  subject         Subject             @relation(fields: [subjectId], references: [id])
+  subjectId       String              @db.ObjectId
+  studentFav      User?               @relation(fields: [studentId], references: [id])
+  studentId       String?             @db.ObjectId
+  coursesEnrolled CourseEnrollment[]
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+}
+
+model Teacher {
+  id              String        @id @default(auto()) @map("_id") @db.ObjectId
+  name            String           
+  email           String?       @unique
+  hashedPassword  String?   
+  image           String?   
+  courses         Course[]
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+model Subject {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  name        String    @unique
+  description String?
+  image       String?
+  courses     Course[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model CourseEnrollment {
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  student   User        @relation(fields: [studentId], references: [id])
+  studentId String      @db.ObjectId
+  course    Course      @relation(fields: [courseId], references: [id])
+  courseId  String      @db.ObjectId
+  createdAt DateTime    @default(now())
+}
