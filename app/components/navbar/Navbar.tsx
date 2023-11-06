@@ -14,7 +14,7 @@ const Navbar: React.FC<NavbarProps> = ({
     currentUser
 }) => {
     return (
-        <div className="fixed w-full bg-white z-10 shadow-md">
+        <div className="fixed w-full bg-white z-10 shadow-lg">
             {/* shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] */}
             <div
             className="
@@ -22,18 +22,16 @@ const Navbar: React.FC<NavbarProps> = ({
             border-b-[1px]
             ">
                 <Container>
-                    <div
-                    className="
-                    flex
-                    flex-row
-                    items-center
-                    justify-between
-                    gap-3
-                    md:gap-0
-                    ">
-                        <Logo />
-                        <Search />
-                        <UserMenu currentUser={currentUser} />
+                    <div className="flex flex-row items-center justify-between">
+                        <div className="flex items-center flex-1">
+                            <Logo />
+                        </div>
+                        <div className="flex items-center justify-center">
+                            <Search />
+                        </div>
+                        <div className="flex items-center flex-1 justify-end">
+                            <UserMenu currentUser={currentUser} />
+                        </div>
                     </div>
                 </Container>
             </div>

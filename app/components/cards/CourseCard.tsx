@@ -10,6 +10,7 @@ import useRegisterModal from "@/app/hooks/useRegisterModal";
 import useLogoutModal from "@/app/hooks/useLogoutModal";
 import { log } from "console";
 import { set } from "react-hook-form";
+import HeartButton from "../HeartButton";
 
 interface CourseCardProps {
     data: Course;
@@ -82,6 +83,12 @@ const CourseCard:React.FC<CourseCardProps> = ({
                     src={'/images/course.jpeg'} 
                     className="object-cover object-center w-full h-full group-hover:scale-105 transition-all duration-300"
                     />
+                    <div className="absolute top-3 right-3">
+                        <HeartButton
+                        courseId={data.id}
+                        currentUser={currentUser}
+                        />
+                    </div>
                 </div>
                 <div
                 className="

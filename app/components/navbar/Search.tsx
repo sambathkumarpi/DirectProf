@@ -1,12 +1,15 @@
 'use client';
 
+import { useState } from 'react';
 import { BiSearch } from 'react-icons/bi';
 
 const Search = () => {
+    const [clicked, setClicked] = useState(false);
     return (
     <div
+    onClick={() => setClicked(!clicked)}
     className="
-    border-[1.5px]
+    border-[2px]
     w-full
     md:w-auto
     py-2
@@ -26,27 +29,26 @@ const Search = () => {
         "
         >
             <div
-            className="
+            className={`
             text-sm
             font-semibold
             px-6
             hover:underline
-            ">
-                Material
+            ${clicked ? 'hidden' : 'text-black'}
+            `}>
+                Search
             </div>
             <div
             className="
             text-sm
             font-semibold
             border-s-[1px]
-            pl-6
+            pl-2
             pr-2
             flex
             flex-row
             items-center
-            gap-3
             ">
-                <div className='hidden sm:block hover:underline'>Date</div>
                 <div
                 className='
                 p-2

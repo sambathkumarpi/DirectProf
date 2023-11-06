@@ -8,17 +8,21 @@ interface EmptyStateProps {
     title?: string;
     subtitle?: string;
     showReset?: boolean;
+    noHeight?: boolean;
 }
 
 const EmptyState:React.FC<EmptyStateProps> = ({
     title="No exact matches found",
     subtitle="Try changing or removing your filter",
-    showReset = false
+    showReset = false,
+    noHeight = false
 }) => {
     const router = useRouter();
 
     return (
-        <div className="flex flex-col items-center justify-center h-[60vh] gap-2">
+        <div className={`flex flex-col items-center justify-center gap-2 ${
+            noHeight ? '' : 'h-[60vh]'
+        }`}>
             <Heading
             center
             title={title}

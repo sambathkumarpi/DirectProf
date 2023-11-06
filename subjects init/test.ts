@@ -128,3 +128,99 @@ export async function createAdditionalHistoryCourses() {
     await prisma.$disconnect();
   }
 }
+
+export async function createMathAndITCourses() {
+  try {
+    // Find the existing professor by email
+    const teacher = await prisma.teacher.findUnique({
+      where: {
+        email: "jane@example.com", // Use the professor's email
+      },
+    });
+
+    // Find the existing subjects for "Math" and "IT"
+    const mathSubject = await prisma.subject.findUnique({
+      where: {
+        name: "Math",
+      },
+    });
+
+    const itSubject = await prisma.subject.findUnique({
+      where: {
+        name: "IT",
+      },
+    });
+
+    if (!teacher || !mathSubject || !itSubject) {
+      throw new Error("Teacher or subject not found");
+    }
+
+    // Create multiple math courses
+    const mathCourses = [
+      {
+        title: "Advanced Calculus",
+        description: "This course covers advanced topics in calculus, including limits, derivatives, and integrals.",
+      },
+      {
+        title: "Linear Algebra Fundamentals",
+        description: "Explore the fundamentals of linear algebra, including vector spaces, matrices, and eigenvalues.",
+      },
+    ];
+
+    // Create multiple IT courses
+    const itCourses = [
+      {
+        title: "Web Development Basics",
+        description: "Learn the basics of web development, including HTML, CSS, and JavaScript.",
+      },
+      {
+        title: "Database Design Principles",
+        description: "Discover the principles of designing efficient and secure databases for applications.",
+      },
+    ];
+
+    for (const course of mathCourses) {
+      await prisma.course.create({
+        data: {
+          title: course.title,
+          description: course.description,
+          teacher: {
+            connect: {
+              id: teacher.id,
+            },
+          },
+          subject: {
+            connect: {
+              id: mathSubject.id,
+            },
+          },
+        },
+      });
+    }
+
+    for (const course of itCourses) {
+      await prisma.course.create({
+        data: {
+          title: course.title,
+          description: course.description,
+          teacher: {
+            connect: {
+              id: teacher.id,
+            },
+          },
+          subject: {
+            connect: {
+              id: itSubject.id,
+            },
+          },
+        },
+      });
+    }
+
+    console.log("Math and IT courses created successfully.");
+  } catch (error) {
+    console.error("Error creating Math and IT courses:", error);
+  } finally {
+    await prisma.$disconnect();
+  }
+}

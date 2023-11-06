@@ -2,7 +2,7 @@ import getCurrentUser from "./actions/getCurrentUser";
 import getSubjects from "./actions/getSubjects";
 import Container from "./components/Container";
 import EmptyState from "./components/EmptyState";
-import SubjectCard from "./components/courses/SubjectCard";
+import SubjectCard from "./components/cards/SubjectCard";
 
 export default async function Home() {
   const subject = await getSubjects();
@@ -14,7 +14,7 @@ export default async function Home() {
 
   return (
     <Container>
-      <h1 className="text-2xl font-semibold text-center pt-10">
+      <h1 className="text-2xl font-semibold text-center pt-16">
         Subjects
       </h1>
       <hr className="my-4" />

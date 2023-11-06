@@ -13,7 +13,6 @@ export default async function getSubjectIdByName(
             throw new Error('Subject name is required');
         }
         subjectName=subjectName.replace(/_/g, " ");
-        console.log('subjectName', subjectName);
         const subject = await prisma.subject.findUnique({
             where: {
                 name: subjectName

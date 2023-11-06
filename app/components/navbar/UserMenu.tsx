@@ -1,14 +1,18 @@
 'use client';
 
 import { AiOutlineMenu } from 'react-icons/ai';
-import Avatar from '../Avatar';
-import { use, useCallback, useEffect, useRef, useState } from 'react';
-import MenuItem from './MenuItem';
-import useRegisterModal from '@/app/hooks/useRegisterModal';
-import useLoginModal from '@/app/hooks/useLoginModal';
-import { sign } from 'crypto';
+import { RiMoonClearFill, RiSunFill } from 'react-icons/ri';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { signOut } from 'next-auth/react';
 import { SafeUser } from '@/app/types';
+import { useRouter } from "next/navigation";
+
+import MenuItem from './MenuItem';
+import Avatar from '../Avatar';
+
+import useRegisterModal from '@/app/hooks/useRegisterModal';
+import useLoginModal from '@/app/hooks/useLoginModal';
+import useTeacherModal from '@/app/hooks/useTeacherModal';
 
 interface UserMenuProps {
     currentUser?: SafeUser | null;
@@ -17,12 +21,20 @@ interface UserMenuProps {
 const UserMenu: React.FC<UserMenuProps> = ({
     currentUser,
 }) => {
+    const router = useRouter();
     const registerModal = useRegisterModal();
     const loginModal = useLoginModal();
+    const teacherModal = useTeacherModal();
+
     const [isOpen, setIsOpen] = useState(false);
-    
+    const [darkmode, setDarkmode] = useState(false);
+
     const toggleOpen = useCallback(() => {
         setIsOpen((value) => !value);
+    }, []);
+
+    const toggleDarkmode = useCallback(() => {
+        setDarkmode((value) => !value);
     }, []);
 
     const ref = useRef<HTMLDivElement | null>(null);
@@ -44,6 +56,11 @@ const UserMenu: React.FC<UserMenuProps> = ({
     return (
         <div className="relative">
             <div className="flex flex-row items-center gap-3">
+                {darkmode ? (
+                    <RiMoonClearFill className="text-blue-500 cursor-pointer" onClick={toggleDarkmode}/>
+                ) : (
+                    <RiSunFill className="text-yellow-500 cursor-pointer" onClick={toggleDarkmode}/>
+                )}
                 {/* <div 
                 onClick={() => {}}
                 className="
@@ -122,8 +139,8 @@ const UserMenu: React.FC<UserMenuProps> = ({
                             label="My Courses"
                             />
                             <MenuItem
-                            onClick={()=>{}}
-                            label="My Favourites"
+                            onClick={()=>router.push('/favorites')}
+                            label="My Favorites"
                             />
                             <MenuItem
                             onClick={() => signOut()}
@@ -143,7 +160,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
                                 />
                                 <hr className='my-2' />
                                 <MenuItem
-                                onClick={()=>{}}
+                                onClick={teacherModal.onOpen}
                                 label="You're a teacher?"
                                 />
                             </>

@@ -3,7 +3,7 @@ import getCurrentUser from "@/app/actions/getCurrentUser";
 import prisma from "@/app/libs/prismadb";
 
 interface IParams {
-    coursesId?: string;
+    courseId?: string;
 }
 
 export async function POST(
@@ -13,11 +13,11 @@ export async function POST(
     const currentUser = await getCurrentUser();
     if (!currentUser) return NextResponse.error();  // return NextResponse.redirect("/");
 
-    const { coursesId } = params;
-    if (!coursesId || typeof(coursesId)!=='string') throw new Error("Invalid ID");
+    const { courseId: courseId } = params;
+    if (!courseId || typeof(courseId)!=='string') throw new Error("Invalid ID");
 
     let favIds = [...(currentUser.favoritesIds||[])];
-    favIds.push(coursesId);
+    favIds.push(courseId);
 
     const user = await prisma.user.update({
         where: { id: currentUser.id },
@@ -34,11 +34,11 @@ export async function DELETE(
     const currentUser = await getCurrentUser();
     if(!currentUser) return NextResponse.error();  // return NextResponse.redirect("/");
 
-    const { coursesId } = params;
-    if (!coursesId || typeof(coursesId)!=='string') throw new Error("Invalid ID");
+    const { courseId: courseId } = params;
+    if (!courseId || typeof(courseId)!=='string') throw new Error("Invalid ID");
 
     let favIds = [...(currentUser.favoritesIds||[])];
-    favIds = favIds.filter((id) => id!==coursesId);
+    favIds = favIds.filter((id) => id!==courseId);
 
     const user = await prisma.user.update({
         where: { id: currentUser.id },

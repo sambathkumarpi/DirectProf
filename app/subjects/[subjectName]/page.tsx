@@ -2,10 +2,10 @@ import getCoursesBySubject from "@/app/actions/getCoursesBySubject";
 import getCurrentUser from "@/app/actions/getCurrentUser";
 import Container from "@/app/components/Container";
 import EmptyState from "@/app/components/EmptyState";
-import CourseCard from "@/app/components/courses/CourseCard";
+import CourseCard from "@/app/components/cards/CourseCard";
 
 interface IParams {
-    subjectName?: string;
+  subjectName?: string;
 }
 
 const SubjectPage = async ({ params } : { params: IParams }) => {
@@ -21,10 +21,24 @@ const SubjectPage = async ({ params } : { params: IParams }) => {
         />
       )
     }
-    // createAdditionalHistoryCourses();
+    if (courses.length === 0) {
+      return (
+        <Container>
+          <h1 className="text-2xl font-semibold text-center pt-16">
+            {params.subjectName?.replace(/_/g, " ")}
+          </h1>
+          <hr className="my-4" />
+          {/* <Heading title={params.subjectName?.replace(/_/g, " ") || "This course does not exists"} />  */}
+          <EmptyState
+          title="No courses found"
+          subtitle="There is no course for this subject yet."
+          />
+        </Container>        
+      );
+    }
     return (
         <Container>
-          <h1 className="text-2xl font-semibold text-center pt-10">
+          <h1 className="text-2xl font-semibold text-center pt-16">
             {params.subjectName?.replace(/_/g, " ")}
           </h1>
           <hr className="my-4" />
