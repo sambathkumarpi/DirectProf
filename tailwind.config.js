@@ -1,13 +1,16 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: [
-    "./app/**/*.{js,jsx,ts,tsx}",
-    "./pages/**/*.{js,jsx,ts,tsx}",
-    "./components/**/*.{js,jsx,ts,tsx}",
-  ],
-  theme: {
-    extend: {},
+export const content = [
+  "./app/**/*.{js,jsx,ts,tsx}",
+  "./pages/**/*.{js,jsx,ts,tsx}",
+  "./components/**/*.{js,jsx,ts,tsx}",
+];
+export const theme = {
+  extend: {
+    backgroundColor: {
+      'black': '#000',
+      'white': '#fff',
+    },
   },
-  plugins: [],
-}
+};
+export const plugins = [];
 

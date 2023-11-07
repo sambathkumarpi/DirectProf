@@ -7,6 +7,7 @@ import ToasterProvider from './providers/ToasterProvider'
 import LoginModal from './components/modals/LoginModal'
 import getCurrentUser from './actions/getCurrentUser'
 import TeacherModal from './components/modals/TeacherModal'
+import Providers from './providers'
 
 export const metadata = {
   title: 'DirectProf',
@@ -27,14 +28,16 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={font.className}>
+        <Providers>
         <ToasterProvider />
         <LoginModal />
         <RegisterModal />
         <TeacherModal />
         <Navbar currentUser={currentUser} />
         <div className='pb-20 pt-24'>
-          {children}
+            {children}
         </div>
+      </Providers>
       </body>
     </html>
   )

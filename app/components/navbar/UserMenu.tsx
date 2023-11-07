@@ -13,6 +13,8 @@ import Avatar from '../Avatar';
 import useRegisterModal from '@/app/hooks/useRegisterModal';
 import useLoginModal from '@/app/hooks/useLoginModal';
 import useTeacherModal from '@/app/hooks/useTeacherModal';
+import { useTheme } from 'next-themes';
+import Providers from '@/app/providers';
 
 interface UserMenuProps {
     currentUser?: SafeUser | null;
@@ -25,9 +27,10 @@ const UserMenu: React.FC<UserMenuProps> = ({
     const registerModal = useRegisterModal();
     const loginModal = useLoginModal();
     const teacherModal = useTeacherModal();
-
+    
     const [isOpen, setIsOpen] = useState(false);
     const [darkmode, setDarkmode] = useState(false);
+    const {theme, setTheme} = useTheme();
 
     const toggleOpen = useCallback(() => {
         setIsOpen((value) => !value);
@@ -35,7 +38,8 @@ const UserMenu: React.FC<UserMenuProps> = ({
 
     const toggleDarkmode = useCallback(() => {
         setDarkmode((value) => !value);
-    }, []);
+        setTheme(theme === 'dark' ? 'light' : 'dark');
+    }, [theme, setTheme]);
 
     const ref = useRef<HTMLDivElement | null>(null);
   
@@ -54,12 +58,13 @@ const UserMenu: React.FC<UserMenuProps> = ({
 
 
     return (
+        <Providers>
         <div className="relative">
             <div className="flex flex-row items-center gap-3">
                 {darkmode ? (
-                    <RiMoonClearFill className="text-blue-500 cursor-pointer" onClick={toggleDarkmode}/>
+                    <RiMoonClearFill className="text-blue-500 cursor-pointer" onClick={toggleDarkmode} title="Change to Dark Mode"/>
                 ) : (
-                    <RiSunFill className="text-yellow-500 cursor-pointer" onClick={toggleDarkmode}/>
+                    <RiSunFill className="text-yellow-500 cursor-pointer" onClick={toggleDarkmode} title="Change to Light Mode"/>
                 )}
                 {/* <div 
                 onClick={() => {}}
@@ -95,7 +100,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
                 hover:shadow-md
                 transition
                 ">
-                    <AiOutlineMenu />
+                    <AiOutlineMenu className={`text-${theme==='dark' ? 'blue':'neutral'}-500`} />
                     <div className="hidden md:block">
                         <Avatar src={currentUser?.image} />
                     </div>
@@ -103,19 +108,19 @@ const UserMenu: React.FC<UserMenuProps> = ({
             </div>
             {isOpen && (
                 <div
-                className='
+                className={`
                 absolute
                 rounded-xl
                 shadow-md
                 w-[40vw]
                 md:w-3/4
-                bg-white
+                ${theme==='dark' ? 'bg-neutral-700' : 'bg-white'}
                 overflow-hidden
                 right-0
                 top-12
                 text-sm
-                min-w-[150px]'
-                >
+                min-w-[150px]
+                `}>
                     <div ref={ref} className='flex flex-col'>
                         {currentUser ? (
                             <>
@@ -169,6 +174,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
                 </div>
             )}
         </div>
+        </Providers>
     );
 }
 

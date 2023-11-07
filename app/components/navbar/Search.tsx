@@ -1,10 +1,12 @@
 'use client';
 
+import { useTheme } from 'next-themes';
 import { useState } from 'react';
 import { BiSearch } from 'react-icons/bi';
 
 const Search = () => {
     const [clicked, setClicked] = useState(false);
+    const {theme} = useTheme();
     return (
     <div
     onClick={() => setClicked(!clicked)}
@@ -34,7 +36,8 @@ const Search = () => {
             font-semibold
             px-6
             hover:underline
-            ${clicked ? 'hidden' : 'text-black'}
+            ${clicked ? 'hidden' : 'show'}
+            ${theme==='dark'?'text-white':'text-black'}
             `}>
                 Search
             </div>

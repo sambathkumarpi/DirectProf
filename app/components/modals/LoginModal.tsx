@@ -16,12 +16,14 @@ import { toast } from "react-hot-toast";
 import Button from "../Button";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useTheme } from "next-themes";
 
 const LoginModal = () => {
     const router = useRouter();
     const loginModal = useLoginModal();
     const registerModal = useRegisterModal();
     const [isLoading, setIsLoading] = useState(false);
+    const { theme } = useTheme();
 
     const {
         register,
@@ -121,12 +123,11 @@ const LoginModal = () => {
                     </div>
                     <div
                     onClick={toggle}
-                    className="
-                    text-neutral-800
+                    className={`
+                    ${theme==='dark'?'hover:text-neutral-200':'text-neutral-800'}
                     cursor-pointer
                     hover:underline
-                    "
-                    >
+                    `}>
                         Create an account
                     </div>
                 </div>

@@ -3,6 +3,7 @@
 import { use, useCallback, useEffect, useRef, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import Button from "../Button";
+import { useTheme } from "next-themes";
 
 interface ModalProps {
     isOpen?: boolean;
@@ -31,6 +32,7 @@ const Modal: React.FC<ModalProps> = ({
 }) => {
     const [showModal, setShowModal] = useState(isOpen);
     const ref = useRef<HTMLDivElement | null>(null);
+    const { theme } = useTheme();
   
     useEffect(() => {
       const handleClickOutside = (event: MouseEvent) => {
@@ -131,7 +133,7 @@ const Modal: React.FC<ModalProps> = ({
                     
                     >
                         <div
-                        className="
+                        className={`
                         translate
                         h-full
                         lg:h-auto
@@ -143,11 +145,10 @@ const Modal: React.FC<ModalProps> = ({
                         flex
                         flex-col
                         w-full
-                        bg-white
+                        ${theme==='dark'?'bg-[#1a202c]':'bg-white'}
                         outline-none
                         focus:outline-none
-                        "
-                        >
+                        `}>
                             {/*header*/}
                             <div
                             className="

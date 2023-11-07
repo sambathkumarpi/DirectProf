@@ -1,5 +1,6 @@
 'use client';
 
+import { useTheme } from "next-themes";
 import Container from "../Container";
 import Logo from "./Logo";
 import Search from "./Search";
@@ -13,9 +14,9 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({
     currentUser
 }) => {
+    const { theme } = useTheme();
     return (
-        <div className="fixed w-full bg-white z-10 shadow-lg">
-            {/* shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] */}
+        <div className={`fixed w-full ${theme==='dark'?'bg-[#1a202c]':'bg-white'} z-10 shadow-lg`}>
             <div
             className="
             py-4
@@ -23,7 +24,7 @@ const Navbar: React.FC<NavbarProps> = ({
             ">
                 <Container>
                     <div className="flex flex-row items-center justify-between">
-                        <div className="flex items-center flex-1">
+                        <div className="flex items-center flex-1" title="Home page DirectProf">
                             <Logo />
                         </div>
                         <div className="flex items-center justify-center">

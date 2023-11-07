@@ -5,6 +5,7 @@ import { FieldErrors, FieldValues, UseFormRegister } from "react-hook-form";
 import { BiDollar } from "react-icons/bi";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { useState } from "react";
+import { useTheme } from "next-themes";
 
 interface InputProps {
     id: string;
@@ -28,7 +29,8 @@ const Input: React.FC<InputProps> = ({
     errors
 }) => {
     const [showPassword, setShowPassword] = useState(false);
-    
+    const { theme } = useTheme();
+
     const clickOnEye = () => {
         setShowPassword(!showPassword);
     };
@@ -57,7 +59,7 @@ const Input: React.FC<InputProps> = ({
             p-4
             pt-6
             font-light
-            bg-white
+            ${theme==='dark'?'bg-neutral-600':'bg-white'}
             border-2
             rounded-md
             outline-none
@@ -84,7 +86,8 @@ const Input: React.FC<InputProps> = ({
             peer-placeholder-shown:translate-y-0
             peer-focus:scale-75
             peer-focus:-translate-y-4
-            ${errors[id] ? "text-red-500" : "text-zinc-700"}
+            ${errors[id] ? "text-red-400" : (theme==='dark'?'text-white':'text-neutral-600')}
+            
             `}
             >
                 {label}

@@ -1,5 +1,6 @@
 'use client';
 
+import { useTheme } from "next-themes";
 import { IconType } from "react-icons";
 
 interface ButtonProps {
@@ -19,8 +20,9 @@ const Button: React.FC<ButtonProps> = ({
     outline,
     small,
     icon: Icon,
-    notLarge
+    notLarge = false
 }) => {
+    const { theme } = useTheme();
     return ( 
         <button
         onClick={onClick}
@@ -33,7 +35,7 @@ const Button: React.FC<ButtonProps> = ({
         hover:opacity-80
         transition
         ${notLarge ? 'w-1/4' : 'w-full'}
-        ${outline ? 'bg-white border-[1px] border-black text-black' : 'bg-blue-500 text-white'}
+        ${outline ? (theme==='dark' ? 'bg-neutral-600 border-white text-white':'bg-white border-[1px] border-black text-black') : 'bg-blue-500 text-white'}
         ${small ? 'py-1 px-4 text-sm font-light border-[1px]' : 'py-3 px-6 text-md font-semibold border-2'}
         `}
         >

@@ -7,3 +7,14 @@ body,
 :root{
     height: 100%;
 }
+
+[data-theme="light"] {
+    font-family: 'Nunito', sans-serif;
+    background-color: #f7fafc;
+    color: #4a5568;
+}
+
+[data-theme="dark"] {
+    background-color: #1a202c;
+    color: #cbd5e0;
+}

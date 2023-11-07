@@ -14,11 +14,13 @@ import { signIn } from "next-auth/react";
 
 import useRegisterModal from "@/app/hooks/useRegisterModal";
 import useLoginModal from "@/app/hooks/useLoginModal";
+import { useTheme } from "next-themes";
 
 const RegisterModal = () => {
     const registerModal = useRegisterModal();
     const loginModal = useLoginModal();
     const [isLoading, setIsLoading] = useState(false);
+    const { theme } = useTheme();
 
     const {
         register,
@@ -120,12 +122,11 @@ const RegisterModal = () => {
                     </div>
                     <div
                     onClick={toggle}
-                    className="
-                    text-neutral-800
+                    className={`
+                    ${theme==='dark'?'hover:text-neutral-200':'text-neutral-800'}
                     cursor-pointer
                     hover:underline
-                    "
-                    >
+                    `}>
                         Sign In
                     </div>
                 </div>
