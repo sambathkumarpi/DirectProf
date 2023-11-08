@@ -12,25 +12,31 @@ import Avatar from '../Avatar';
 
 import useRegisterModal from '@/app/hooks/useRegisterModal';
 import useLoginModal from '@/app/hooks/useLoginModal';
-import useTeacherModal from '@/app/hooks/useTeacherModal';
+import useTeacherRegisterModal from '@/app/hooks/useTeacherRegisterModal';
 import { useTheme } from 'next-themes';
 import Providers from '@/app/providers';
+import { Teacher } from '@prisma/client';
+import UserConnectedMenu from './UserConnectedMenu';
+import TeacherMenu from './TeacherMenu';
 
 interface UserMenuProps {
     currentUser?: SafeUser | null;
+    currentTeacher?: Teacher | null;
 }
 
 const UserMenu: React.FC<UserMenuProps> = ({
     currentUser,
+    currentTeacher
 }) => {
     const router = useRouter();
     const registerModal = useRegisterModal();
     const loginModal = useLoginModal();
-    const teacherModal = useTeacherModal();
+    const teacherRegisterModal = useTeacherRegisterModal();
     
     const [isOpen, setIsOpen] = useState(false);
     const [darkmode, setDarkmode] = useState(false);
     const {theme, setTheme} = useTheme();
+    const [loaded, setLoaded] = useState(false);
 
     const toggleOpen = useCallback(() => {
         setIsOpen((value) => !value);
@@ -56,6 +62,13 @@ const UserMenu: React.FC<UserMenuProps> = ({
     });
 
 
+    useEffect(() => {
+      if (!loaded) {
+        toggleDarkmode();
+      }
+    }, [loaded]);
+
+    console.log(theme);
 
     return (
         <Providers>
@@ -123,37 +136,11 @@ const UserMenu: React.FC<UserMenuProps> = ({
                 `}>
                     <div ref={ref} className='flex flex-col'>
                         {currentUser ? (
-                            <>
-                            <div
-                            className="
-                            cursor-default
-                            text-center
-                            px-4
-                            py-3
-                            font-bold
-                            "
-                            >
-                                Hello {currentUser.name}
-                            </div>
-                            <MenuItem
-                            onClick={()=>{}}
-                            label="My Profile"
-                            />
-                            <MenuItem
-                            onClick={()=>{}}
-                            label="My Courses"
-                            />
-                            <MenuItem
-                            onClick={()=>router.push('/favorites')}
-                            label="My Favorites"
-                            />
-                            <MenuItem
-                            onClick={() => signOut()}
-                            label="Log out"
-                            />
-                        </>
-
+                            <UserConnectedMenu currentUser={currentUser} />
                         ) : (
+                            (currentTeacher) ? (
+                                <TeacherMenu currentTeacher={currentTeacher} />
+                            ) :
                             <>
                                 <MenuItem
                                 onClick={()=>{loginModal.onOpen();toggleOpen();}}
@@ -165,7 +152,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
                                 />
                                 <hr className='my-2' />
                                 <MenuItem
-                                onClick={teacherModal.onOpen}
+                                onClick={teacherRegisterModal.onOpen}
                                 label="You're a teacher?"
                                 />
                             </>

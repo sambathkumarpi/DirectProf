@@ -7,11 +7,18 @@ import Modal from "./Modal";
 import Heading from "../Heading";
 import Input from "../inputs/Input";
 import { toast } from "react-hot-toast";
-import useTeacherModal from "@/app/hooks/useTeacherModal";
+import useTeacherLoginModal from "@/app/hooks/useTeacherLoginModal";
+import { useTheme } from "next-themes";
+import { useRouter } from "next/navigation";
+import useTeacherRegisterModal from "@/app/hooks/useTeacherRegisterModal";
+import { signIn } from "next-auth/react";
 
-const TeacherModal = () => {
-    const teacherModal = useTeacherModal();
+const TeacherLoginModal = () => {
+    const router = useRouter();
+    const teacherLoginModal = useTeacherLoginModal();
+    const teacherRegisterModal = useTeacherRegisterModal();
     const [isLoading, setIsLoading] = useState(false);
+    const { theme } = useTheme();
 
     const {
         register,
@@ -21,47 +28,51 @@ const TeacherModal = () => {
         },
     } = useForm<FieldValues>({
         defaultValues: {
-            name: "",
             email: "",
             password: ""
         },
     });
 
+    const toggle = useCallback(() => {
+        teacherLoginModal.onClose();
+        teacherRegisterModal.onOpen();
+    }, [teacherLoginModal, teacherRegisterModal]);
+
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
         setIsLoading(true);
 
-        axios.post("/api/teacher", data)
-            .then(() => {
-                teacherModal.onClose();
-            })
-            .catch((err) => {
-                toast.error("Something went wrong");
-            })
-            .finally(() => {
-                setIsLoading(false);
-            });
+        signIn('credentials', {
+            ...data,
+            redirect: false,
+        })
+        .then((callback) => {
+            setIsLoading(false);
+
+            if(callback?.ok) {
+                toast.success("Logged in successfully");
+                router.refresh();
+                teacherLoginModal.onClose();
+            }
+
+            if(callback?.error) {
+                toast.error(callback.error);
+            }
+        });
+
     };
 
 
     const bodyContent = (
         <div className="flex flex-col gap-4 max-h-[50vh] overflow-y-auto">
             <Heading
-            title="Welcome to DirectProf !"
-            subtitle="Create an account to get started."
+            title="Welcome back !"
+            subtitle="Login to your teacher account"
             center
             />
             <hr />
             <Input
             id="email"
             label="Email"
-            disabled={isLoading}
-            register={register}
-            errors={errors}
-            required
-            />
-            <Input
-            id="name"
-            label="Name"
             disabled={isLoading}
             register={register}
             errors={errors}
@@ -92,17 +103,16 @@ const TeacherModal = () => {
             >
                 <div className="flex flex-row items-center gap-2">
                     <div >
-                        Already have an account?
+                        First time here ?
                     </div>
                     <div
-                    onClick={() => {}}
-                    className="
-                    text-neutral-800
+                    onClick={toggle}
+                    className={`
+                    ${theme==='dark'?'hover:text-neutral-200':'text-neutral-800'}
                     cursor-pointer
                     hover:underline
-                    "
-                    >
-                        Sign In
+                    `}>
+                        Create a teacher account
                     </div>
                 </div>
             </div>
@@ -112,10 +122,10 @@ const TeacherModal = () => {
     return (
         <Modal
         disabled={isLoading}
-        isOpen={teacherModal.isOpen}
-        title="Teacher"
+        isOpen={teacherLoginModal.isOpen}
+        title="Login as a Teacher"
         actionLabel="Continue"
-        onClose={teacherModal.onClose}
+        onClose={teacherLoginModal.onClose}
         onSubmit={handleSubmit(onSubmit)}
         body={bodyContent}
         footer={footerContent}
@@ -123,4 +133,4 @@ const TeacherModal = () => {
     );
 }
 
-export default TeacherModal;
+export default TeacherLoginModal;

@@ -31,7 +31,15 @@ export const authOptions: AuthOptions = {
                     where: { email: credentials.email }
                 });
 
-                if (!user || !user?.hashedPassword) throw new Error("Invalid credentials");
+                if (!user || !user?.hashedPassword){
+                    const teacher = await prisma.teacher.findUnique({
+                        where: { email: credentials.email }
+                    });
+                    if (!teacher || !teacher?.hashedPassword) throw new Error("Invalid credentials");
+                    const isCorrectPwd = await bcrypt.compare(credentials.password, teacher.hashedPassword);
+                    if (!isCorrectPwd) throw new Error("Invalid credentials");
+                    return teacher;
+                } 
 
                 const isCorrectPwd = await bcrypt.compare(credentials.password, user.hashedPassword);
                 

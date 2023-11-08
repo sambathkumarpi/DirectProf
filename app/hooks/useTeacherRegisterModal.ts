@@ -1,15 +1,15 @@
 import { create } from 'zustand';
 
-interface TeacherModalState {
+interface TeacherRegisterModalState {
     isOpen: boolean;
     onOpen: () => void;
     onClose: () => void;
 }
 
-const useTeacherModal = create<TeacherModalState>((set) => ({
+const useTeacherRegisterModal = create<TeacherRegisterModalState>((set) => ({
     isOpen: false,
     onOpen: () => set({ isOpen: true }),
     onClose: () => set({ isOpen: false }),
 }));
 
-export default useTeacherModal;
+export default useTeacherRegisterModal;

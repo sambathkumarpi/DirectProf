@@ -6,8 +6,10 @@ import RegisterModal from './components/modals/RegisterModal'
 import ToasterProvider from './providers/ToasterProvider'
 import LoginModal from './components/modals/LoginModal'
 import getCurrentUser from './actions/getCurrentUser'
-import TeacherModal from './components/modals/TeacherModal'
+import TeacherRegisterModal from './components/modals/TeacherRegisterModal'
 import Providers from './providers'
+import TeacherLoginModal from './components/modals/TeacherLoginModal'
+import getCurrentTeacher from './actions/getCurrentTeacher'
 
 export const metadata = {
   title: 'DirectProf',
@@ -24,7 +26,7 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   const currentUser = await getCurrentUser();
-
+  const currentTeacher = await getCurrentTeacher();
   return (
     <html lang="en">
       <body className={font.className}>
@@ -32,8 +34,9 @@ export default async function RootLayout({
         <ToasterProvider />
         <LoginModal />
         <RegisterModal />
-        <TeacherModal />
-        <Navbar currentUser={currentUser} />
+        <TeacherRegisterModal />
+        <TeacherLoginModal />
+        <Navbar currentUser={currentUser} currentTeacher={currentTeacher}/>
         <div className='pb-20 pt-24'>
             {children}
         </div>

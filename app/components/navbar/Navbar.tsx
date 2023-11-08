@@ -6,13 +6,16 @@ import Logo from "./Logo";
 import Search from "./Search";
 import UserMenu from "./UserMenu";
 import { SafeUser } from "@/app/types";
+import { Teacher } from "@prisma/client";
 
 interface NavbarProps {
     currentUser?: SafeUser | null;
+    currentTeacher?: Teacher | null;
 }
 
 const Navbar: React.FC<NavbarProps> = ({
-    currentUser
+    currentUser,
+    currentTeacher
 }) => {
     const { theme } = useTheme();
     return (
@@ -31,7 +34,7 @@ const Navbar: React.FC<NavbarProps> = ({
                             <Search />
                         </div>
                         <div className="flex items-center flex-1 justify-end">
-                            <UserMenu currentUser={currentUser} />
+                            <UserMenu currentUser={currentUser} currentTeacher={currentTeacher} />
                         </div>
                     </div>
                 </Container>
