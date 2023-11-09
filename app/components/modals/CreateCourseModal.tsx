@@ -12,6 +12,7 @@ import Heading from "../Heading";
 import Input from "../inputs/Input";
 import Search from "../navbar/Search";
 import SubjectButton from "../inputs/SubjectButton";
+import ImageUpload from "../inputs/ImageUpload";
 
 interface CreateCourseModalProps {
     subjects: any[];
@@ -45,7 +46,7 @@ const CreateCourseModal: React.FC<CreateCourseModalProps> = ({
             subject: '',
             title: '',
             description: '',
-            image: '/images/course.jpeg',
+            image: '',
             // price: '',
             // tags: []
         }
@@ -54,7 +55,7 @@ const CreateCourseModal: React.FC<CreateCourseModalProps> = ({
     const title = watch('title');
     const subject = watch('subject');
     const description = watch('description');
-    const image = watch('imageSrc');
+    const image = watch('image');
     // const price = watch('price');
     // const tags = watch('tags');
 
@@ -130,6 +131,7 @@ const CreateCourseModal: React.FC<CreateCourseModalProps> = ({
             gap-4
             max-h-[50vh]
             overflow-y-auto
+            justify-items-center
             ">
                 {subjects.map((subject) => (
                     <button key={subject.id} className="col-span-1">
@@ -175,12 +177,10 @@ const CreateCourseModal: React.FC<CreateCourseModalProps> = ({
                 title="What is the cover image of your course ?"
                 subtitle="Upload an image"
                 />
-                {/* <Input 
-                id="imageSrc"
-                label="Image"
-                register={register}
-                errors={errors}
-                /> */}
+                <ImageUpload
+                value={image}
+                onChange={(value) => setCustomValue('image', value)}
+                />
             </div>
         )
     }

@@ -22,6 +22,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
         hover:bg-neutral-100
         ${theme==='dark'?'hover:text-neutral-700':''}
         transition
+        duration-300
         font-semibold
         cursor-pointer
         text-end
