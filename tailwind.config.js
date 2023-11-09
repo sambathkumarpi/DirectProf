@@ -11,6 +11,6 @@ export const theme = {
       'white': '#fff',
     },
   },
+  darkMode: 'class',
 };
-export const plugins = [];
 

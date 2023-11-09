@@ -29,7 +29,7 @@ const TeacherConnectedMenu: React.FC<TeacherConnectedMenuProps> = ({
                 Hello {currentTeacher.name}
             </div>
             <MenuItem
-            onClick={()=>{}}
+            onClick={() => router.push('/teacherDashboard')}
             label="My Dashboard"
             />
             <MenuItem

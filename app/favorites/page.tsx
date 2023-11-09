@@ -1,14 +1,25 @@
 import getCurrentUser from "../actions/getCurrentUser";
 import getFavorites from "../actions/getFavorites";
+import getSubjectById from "../actions/getSubjectById";
+import getTeacherById from "../actions/getTeacherById";
 import Container from "../components/Container";
 import EmptyState from "../components/EmptyState";
 import Heading from "../components/Heading";
 import NotLoggedIn from "../components/NotLoggedIn";
 import CourseCard from "../components/cards/CourseCard";
+import TeacherDashboardTable from "../teacherDashboard/TeacherDashboard";
+import FavoritesTable from "./FavoritesTable";
 
 const FavoritesPage = async () => {
     const favorites = await getFavorites();
     const currentUser = await getCurrentUser();
+    let subjects = []
+    let teachers = []
+    for(let i = 0; i < favorites.length; i++) {
+        subjects[i] = (await getSubjectById({ subjectId: favorites[i].subjectId })).name;
+        teachers[i] = (await getTeacherById({ teacherId: favorites[i].teacherId })).name;
+    }
+
 
     if(!currentUser) return (<NotLoggedIn />);
     
@@ -49,6 +60,14 @@ const FavoritesPage = async () => {
                 ))}
             
             </div>
+            <hr className="my-4" />
+            <FavoritesTable
+            currentUser={currentUser}
+            courses={favorites}
+            teachers={teachers}
+            subjects={subjects}
+            />
+
         </Container>
     );
 }
