@@ -1,7 +1,7 @@
 'use client';
 
 import { SafeUser } from "@/app/types";
-import { Course } from "@prisma/client";
+import { Course, Teacher } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import React, { useCallback, useState } from "react";
 import Image from "next/image";
@@ -19,6 +19,7 @@ interface CourseCardProps {
     actionLabel?: string;
     actionId?: string;
     currentUser?: SafeUser | null;
+    currentTeacher?: Teacher | null;
 }
 
 const CourseCard:React.FC<CourseCardProps> = ({
@@ -27,7 +28,8 @@ const CourseCard:React.FC<CourseCardProps> = ({
     disabled,
     actionLabel,
     actionId="",
-    currentUser
+    currentUser,
+    currentTeacher
 }) => {
     const router = useRouter();
     const register = useRegisterModal();
@@ -47,7 +49,7 @@ const CourseCard:React.FC<CourseCardProps> = ({
     }, [actionId, onAction, disabled]);
 
     const redirection = () => {
-        if (currentUser !== null) {
+        if (currentUser || currentTeacher) {
             router.push(`/courses/${data.id}`);
         } else {
             logoutModal.onOpen();

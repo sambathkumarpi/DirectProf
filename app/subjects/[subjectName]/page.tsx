@@ -1,4 +1,5 @@
 import getCoursesBySubject from "@/app/actions/getCoursesBySubject";
+import getCurrentTeacher from "@/app/actions/getCurrentTeacher";
 import getCurrentUser from "@/app/actions/getCurrentUser";
 import Container from "@/app/components/Container";
 import EmptyState from "@/app/components/EmptyState";
@@ -10,6 +11,7 @@ interface IParams {
 
 const SubjectPage = async ({ params } : { params: IParams }) => {
     const currentUser = await getCurrentUser();
+    const currentTeacher = await getCurrentTeacher();
     let courses;
     try{
       courses = await getCoursesBySubject(params);
@@ -58,6 +60,7 @@ const SubjectPage = async ({ params } : { params: IParams }) => {
               return (
                 <CourseCard
                 currentUser={currentUser}
+                currentTeacher={currentTeacher}
                 key={course.id}
                 data={course}
                 />

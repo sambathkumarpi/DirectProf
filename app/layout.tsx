@@ -10,6 +10,8 @@ import TeacherRegisterModal from './components/modals/TeacherRegisterModal'
 import Providers from './providers'
 import TeacherLoginModal from './components/modals/TeacherLoginModal'
 import getCurrentTeacher from './actions/getCurrentTeacher'
+import CreateCourseModal from './components/modals/CreateCourseModal'
+import getSubjects from './actions/getSubjects'
 
 export const metadata = {
   title: 'DirectProf',
@@ -27,6 +29,7 @@ export default async function RootLayout({
 }) {
   const currentUser = await getCurrentUser();
   const currentTeacher = await getCurrentTeacher();
+  const subjects = await getSubjects();
   return (
     <html lang="en">
       <body className={font.className}>
@@ -36,7 +39,8 @@ export default async function RootLayout({
         <RegisterModal />
         <TeacherRegisterModal />
         <TeacherLoginModal />
-        <Navbar currentUser={currentUser} currentTeacher={currentTeacher}/>
+        <CreateCourseModal subjects={subjects} />
+        <Navbar currentUser={currentUser} currentTeacher={currentTeacher} />
         <div className='pb-20 pt-24'>
             {children}
         </div>

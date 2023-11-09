@@ -68,8 +68,6 @@ const UserMenu: React.FC<UserMenuProps> = ({
       }
     }, [loaded]);
 
-    console.log(theme);
-
     return (
         <Providers>
         <div className="relative">

@@ -11,6 +11,7 @@ import NotLoggedIn from "@/app/components/NotLoggedIn";
 import Image from "next/image";
 import React from "react";
 import CoursePresentation from "./CoursePresentation";
+import getCurrentTeacher from "@/app/actions/getCurrentTeacher";
 
 interface IParams {
     courseId?: string;
@@ -18,10 +19,11 @@ interface IParams {
 
 const CoursePage = async ({ params } : { params: IParams }) => {
     const currentUser = await getCurrentUser();
+    const currentTeacher = await getCurrentTeacher();
     const course = await getCourseById(params);
     const subject = await getSubjectById({ subjectId: course.subjectId });
     const teacher = await getTeacherById({ teacherId: course.teacherId });
-    if(!currentUser) {
+    if(!currentUser && !currentTeacher) {
         return (
             <NotLoggedIn />
         );
