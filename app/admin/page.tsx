@@ -11,7 +11,7 @@ export default function AdminPage() {
             <EmptyState
             title='Not available yet'
             subtitle='Come back later'
-            showReset
+            returnMenu
             />
         </Container>
     );

@@ -7,14 +7,14 @@ import Button from "./Button";
 interface EmptyStateProps {
     title?: string;
     subtitle?: string;
-    showReset?: boolean;
+    returnMenu?: boolean;
     noHeight?: boolean;
 }
 
 const EmptyState:React.FC<EmptyStateProps> = ({
     title="No exact matches found",
     subtitle="Try changing or removing your filter",
-    showReset = false,
+    returnMenu = false,
     noHeight = false
 }) => {
     const router = useRouter();
@@ -29,10 +29,10 @@ const EmptyState:React.FC<EmptyStateProps> = ({
             subtitle={subtitle}
             />
             <div className="w-48 mt-4">
-                {showReset && (
+                {returnMenu && (
                     <Button
                     outline
-                    label="Remove filters"
+                    label="Return to menu"
                     onClick={() => router.push('/')}
                     />
                 )}

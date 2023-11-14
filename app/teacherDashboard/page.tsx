@@ -28,7 +28,7 @@ export default async function TeacherDashboard() {
                 <EmptyState
                     title='You have no courses yet'
                     subtitle='Create your first course by clicking on the button below'
-                    showReset />
+                    returnMenu />
             ) : (
                 <TeacherDashboardTable courses={courses} subjects={subjects} />
             )}

@@ -9,7 +9,7 @@ export default async function Home() {
   const currentUser = await getCurrentUser();
 
   if(subject.length === 0) {
-      return <EmptyState showReset />
+      return <EmptyState returnMenu />
   }
 
   return (
