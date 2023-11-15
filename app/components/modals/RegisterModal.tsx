@@ -15,6 +15,18 @@ import { signIn } from "next-auth/react";
 import useRegisterModal from "@/app/hooks/useRegisterModal";
 import useLoginModal from "@/app/hooks/useLoginModal";
 import { useTheme } from "next-themes";
+import { sendVerificationEmail } from "@/utils/email";
+import useSWR from "swr";
+
+const fetchMail = async (url: string) => {
+    const response = await fetch(url);
+    console.log(response);
+    if(!response.ok) {
+        throw new Error('An error occured while fetching the data.');
+    }
+
+    return response.json();
+}
 
 const RegisterModal = () => {
     const registerModal = useRegisterModal();
@@ -22,6 +34,7 @@ const RegisterModal = () => {
     const [isLoading, setIsLoading] = useState(false);
     const { theme } = useTheme();
 
+    
     const {
         register,
         handleSubmit,
@@ -35,21 +48,25 @@ const RegisterModal = () => {
             password: ""
         },
     });
-
+    
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
         setIsLoading(true);
-
+        
         axios.post("/api/register", data)
+        .then(() => {
+            toast.success("Registered successfully, please check your email to verify your account");
+            registerModal.onClose();
+            axios.post(`/api/mail/${data.email}`)
             .then(() => {
-                toast.success("Registered successfully");
-                registerModal.onClose();
+                toast.success("Email sent successfully");
             })
-            .catch((err) => {
-                toast.error("Something went wrong");
             })
-            .finally(() => {
-                setIsLoading(false);
-            });
+        .catch((err) => {
+            toast.error("Something went wrong");
+        })
+        .finally(() => {
+            setIsLoading(false);
+        });
     };
 
     const toggle = useCallback(() => {

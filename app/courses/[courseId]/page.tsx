@@ -2,16 +2,12 @@ import getCourseById from "@/app/actions/getCourseById";
 import getCurrentUser from "@/app/actions/getCurrentUser";
 import getSubjectById from "@/app/actions/getSubjectById";
 import getTeacherById from "@/app/actions/getTeacherById";
-import Avatar from "@/app/components/Avatar";
-import Button from "@/app/components/Button";
-import Container from "@/app/components/Container";
-import Heading from "@/app/components/Heading";
-import HeartButton from "@/app/components/HeartButton";
 import NotLoggedIn from "@/app/components/NotLoggedIn";
-import Image from "next/image";
-import React from "react";
-import CoursePresentation from "./CoursePresentation";
 import getCurrentTeacher from "@/app/actions/getCurrentTeacher";
+import CoursePresentation from "./CoursePresentation";
+
+import React from "react";
+import EnrollCourseModal from "@/app/components/modals/EnrollCourseModal";
 
 interface IParams {
     courseId?: string;
@@ -29,6 +25,8 @@ const CoursePage = async ({ params } : { params: IParams }) => {
         );
     }
     return (
+        <>
+        <EnrollCourseModal course={course} student={currentUser} teacherName={teacher.name} />
         <CoursePresentation
             currentUser={currentUser}
             courseId={course.id}
@@ -38,7 +36,8 @@ const CoursePage = async ({ params } : { params: IParams }) => {
             subjectName={subject.name}
             teacherName={teacher.name}
             teacherImage={teacher.image ?? ''}
-        />
+            />
+        </>
     );
 };
 

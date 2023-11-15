@@ -94,6 +94,8 @@ const LoginModal = () => {
         </div>
     );
     
+    // PASSWORD FORGOTTEN ???
+    
     const footerContent = (
         <div className="flex flex-col gap-4 mt-3 max-h-[50vh] overflow-y-auto">
             <hr />
